@@ -21,6 +21,16 @@ function getStatusComp()
     return $data;
 }
 
+function encode_custom($id)
+{
+   $ecy = \Config\Services::encrypter();
+
+   $eid = $ecy->encrypt($id);
+   $eid = bin2hex($eid);
+
+   return $eid;
+}
+
 function countFrom($pager)
 {
 

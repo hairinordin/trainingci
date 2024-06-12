@@ -83,6 +83,7 @@ class Aduan extends BaseController
     function index2()
     {
         $data['title'] = 'pengurus desa - ajax datatable';
+        $data['lookup_status'] = getStatusComp();
 
         return view('admin/aduan/index2', $data);
 
@@ -114,12 +115,15 @@ class Aduan extends BaseController
             $bil = 0;
             foreach($data->getResult() as $row):
 
+                $eid = encode_custom($row->id);
+
                 $dt['data'][$bil][] = ++$start;
                 $dt['data'][$bil][] = $row->complainant_name;
                 $dt['data'][$bil][] = $row->warganegara;
                 $dt['data'][$bil][] = $row->complainant_email;
                 $dt['data'][$bil][] = $row->complainant_phone;
                 $dt['data'][$bil][] = $row->status;
+                $dt['data'][$bil][] = "<a href='".base_url('admin/aduan/edit/'.$eid)."'>Edit</a>";
                 $bil++; 
 
             endforeach;
@@ -152,7 +156,10 @@ class Aduan extends BaseController
      */
     public function new()
     {
-        //
+        $data['title'] = 'pengurus desa - tambah';
+        // $data['lookup_status'] = getStatusComp();
+
+        return view('admin/aduan/new', $data);
     }
 
     /**
@@ -162,7 +169,53 @@ class Aduan extends BaseController
      */
     public function create()
     {
-        //
+        // $input = $this->request->getPost();
+
+        // d($input);
+        $rules = [
+            'complainant_name' => [
+                'label' => 'Name',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Apa namanya?'
+                ]
+            ],
+            'complainant_email' => [
+                'label' => 'Email',
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'Apa emailnya?',
+                    'valid_email' => 'Emailnya salah'
+                ]
+            ],
+            'complainant_phone' => [
+                'label' => 'Mobile',
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Apa nombornya?',
+                    'numeric' => 'Nombornya salah'
+                ]
+            ],
+            // 'complainant_complaint' => 'required',
+        ];
+        $input = $this->request->getPost(array_keys($rules));
+        // d($input);
+
+        if(!$this->validateData($input, $rules)){
+            return redirect()->back()->withInput();
+        }
+
+        $validateData = $this->validator->getValidated();
+        $model = new ComplainantDetailModel();
+
+        $validateData['complainant_nationality'] = 'CIT001';
+        $validateData['complainant_status'] = 'STS003';
+        if($model->insert($validateData)){
+            return redirect()->to('/admin/aduan2')->with('success', 'Data berjaya disimpan');
+            
+        }
+
+        
     }
 
     /**
@@ -174,7 +227,7 @@ class Aduan extends BaseController
      */
     public function edit($id = null)
     {
-        //
+        echo 'edit' . $id;
     }
 
     /**

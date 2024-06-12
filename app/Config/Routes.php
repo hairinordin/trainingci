@@ -32,5 +32,8 @@ $routes->group ('admin', static function ($routes) {
     $routes->get('aduan', [Aduan::class, 'index'], ['as' => 'admin.aduan.index']);
     $routes->get('aduan2', [Aduan::class, 'index2'], ['as' => 'admin.aduan.index2']);
     $routes->get('aduan/ajaxdata', [Aduan::class, 'ajaxData'], ['as' => 'admin.aduan.ajaxdata']);
+    $routes->get('aduan/new', [Aduan::class, 'new'], ['as' => 'admin.aduan.new']);
+    $routes->post('aduan/create', [Aduan::class, 'create'], ['as' => 'admin.aduan.create']);
+    $routes->get('aduan/edit/(:segment)', [Aduan::class, 'edit'], ['as' => 'admin.aduan.edit']);
 
 });

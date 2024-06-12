@@ -12,7 +12,7 @@ class ComplainantDetailModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['complainant_name', 'complainant_email', 'complainant_phone', 'complainant_nationality', 'complainant_status', 'state_id', 'town_id', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

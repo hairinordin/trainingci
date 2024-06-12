@@ -89,6 +89,8 @@ $request = service('request');
                     </div> -->
 </div>
 
+<a href="<?= url_to('admin.aduan.new') ?>" class="btn btn-info">Tambah</a>
+
 <div class="table-responsive">
 
     <table class="table" id="complainant_dt">
@@ -100,6 +102,7 @@ $request = service('request');
                 <td>Email</td>
                 <td>Phone</td>
                 <td>Status</td>
+                <td>Action</td>
             </tr>
         </thead>
         <tbody>
@@ -116,10 +119,14 @@ $request = service('request');
 
 $(document).ready(function() {
     $('#complainant_dt').DataTable({
-        "fnServerParams" : function(aoData){
-            aoData['searchData']=<?php echo json_encode($request->getGet()); ?>;
+        
+        ajax: {
+            url : '<?= base_url('admin/aduan/ajaxdata') ?>',
+            type: 'GET',
+            data : function(d){
+                d.searchdata=<?= json_encode($request->getGet())?>
+            },
         },
-        ajax: '<?= url_to('admin.aduan.ajaxdata')?>',
         processing: true,
         serverSide: true,
         ordering: true
